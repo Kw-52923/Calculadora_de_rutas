@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/img_laberinto.png" alt="Calculadora de rutas">
+ <img src="https://raw.githubusercontent.com/Kw-52923/Calculadora_de_rutas/main/Funciones_Cal/img/img_laberinto.png" alt="Calculadora de rutas">
 </p>
 
 <h1 align="center">Calculadora de rutas</h1>
