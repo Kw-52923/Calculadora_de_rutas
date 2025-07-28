@@ -1,4 +1,10 @@
-# Calculadora_de_rutas
+<p align="center">
+ <img src="https://raw.githubusercontent.com/Kw-52923/Calculadora_de_rutas/main/Funciones_Cal/img/img_laberinto.png" alt="Calculadora de rutas">
+</p>
+
+<h1 align="center">Calculadora de rutas</h1>
+<p align="center">Proyecto en Javascript</p>
+
 📋 Descripción del Proyecto
 
 Es una calculadora de rutas interactiva que utiliza el algoritmo BFS (Breadth-First Search) para encontrar el camino más corto entre dos puntos en un mapa con obstáculos. El proyecto simula un escenario donde el usuario debe navegar por una ciudad desconocida, evitando edificios, zonas de agua y áreas bloqueadas.
