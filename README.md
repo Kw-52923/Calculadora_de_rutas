@@ -33,13 +33,17 @@ Estructura de archivos
 
 📁 calculadora-rutas/
 ├── 📄 index.html          # Archivo principal
+
 ├── 📄 script.js           # Lógica de la aplicación
+
 └── 📄 README.md          # Documentación
 
 Ejecutar la aplicación
 
 Opción 1: Hacer doble clic en index.html
+
 Opción 2: Abrir desde el navegador → Archivo > Abrir archivo
+
 Opción 3: Usar Live Server si tienes VS Code
 
 
