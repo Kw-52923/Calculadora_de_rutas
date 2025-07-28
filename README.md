@@ -32,6 +32,7 @@ cd calculadora-rutas
 Estructura de archivos
 
 📁 calculadora-rutas/
+
 ├── 📄 index.html          # Archivo principal
 
 ├── 📄 script.js           # Lógica de la aplicación
