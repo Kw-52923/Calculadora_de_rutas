@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Calculadora de Rutas</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: 'Courier New', monospace;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .map-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .map {
+            display: inline-grid;
+            gap: 2px;
+            background: rgba(10, 10, 10, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #030303;
+        }
+        
+        .cell {
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .cell:hover {
+            transform: scale(1.1);
+        }
+        
+        .libre { background: #4CAF50; }
+        .edificio { background: #f44336; }
+        .agua { background: #2196F3; }
+        .bloqueado { background: #9C27B0; }
+        .inicio { background: #FF9800; }
+        .final { background: #FF5722; }
+        .camino { background: #FFEB3B; color: rgb(230, 225, 225); }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        .info {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #ff6b6b;
+        }
+        
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧭 Calculadora de Rutas</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="tamanoMapa">Tamaño del Mapa:</label>
+                <select id="tamanoMapa">
+                    <option value="10">10x10</option>
+                    <option value="15" selected>15x15</option>
+                    <option value="20">20x20</option>
+                </select>
+                <button onclick="generarMapa()">🗺️ Generar Mapa</button>
+            </div>
+            
+            <div class="control-group">
+                <label for="punto_inicio">Punto de Inicio (fila, columna):</label>
+                <input type="text" id="punto_inicio" placeholder="0,0" value="0,0">
+                <label for="punto_final">Punto de Destino (fila, columna):</label>
+                <input type="text" id="punto_final" placeholder="14,14" value="14,14">
+            </div>
+            
+            <div class="control-group">
+                <label for="tipo_obstaculos">Agregar Obstáculo:</label>
+                <select id="tipo_obstaculos">
+                    <option value="1">🏢 Edificio</option>
+                    <option value="2">🌊 Agua</option>
+                    <option value="3">🚧 Bloqueado</option>
+                </select>
+                <button onclick="calcularRuta()">🚀 Calcular Ruta</button>
+                <button onclick="limpiarRuta()">🧹 Limpiar Ruta</button>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item"><div class="legend-color free"></div><span>Camino Libre</span></div>
+            <div class="legend-item"><div class="legend-color building"></div><span>Edificio</span></div>
+            <div class="legend-item"><div class="legend-color water"></div><span>Agua</span></div>
+            <div class="legend-item"><div class="legend-color blocked"></div><span>Bloqueado</span></div>
+            <div class="legend-item"><div class="legend-color start"></div><span>Inicio</span></div>
+            <div class="legend-item"><div class="legend-color end"></div><span>Destino</span></div>
+            <div class="legend-item"><div class="legend-color path"></div><span>Ruta</span></div>
+        </div>
+        
+        <div class="map-container">
+            <div id="grillaMapa" class="map"></div>
+        </div>
+        
+        <div id="info" class="info">
+            <h3>📍 Instrucciones:</h3>
+            <p>1. Generá un mapa del tamaño que prefieras.</p>
+            <p>2. Hacé clic en las celdas para agregar obstáculos.</p>
+            <p>3. Configurá los puntos de inicio y destino.</p>
+            <p>4. ¡Calculá la mejor ruta posible!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
